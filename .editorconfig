@@ -1,0 +1,18 @@
+[*]
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.yml]
+end_of_line = lf
+indent_style = space
+indent_size = 2
+
+[*.json]
+end_of_line = lf
+indent_style = space
+indent_size = 2
+
+[*.js]
+end_of_line = lf
+indent_style = space
+indent_size = 4

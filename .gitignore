@@ -1,0 +1,23 @@
+# package directories
+node_modules
+jspm_packages
+
+#nyc coverage
+.nyc_output
+coverage
+
+#swp files
+*.swp
+
+#sonar info
+sonar-coverage.info
+
+#npm credentials
+.npmrc
+
+.DS_Store
+
+*.log
+.localalias
+
+.vscode
