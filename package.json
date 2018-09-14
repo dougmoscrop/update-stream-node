@@ -1,6 +1,6 @@
 {
   "name": "update-stream",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Merge updates in to a stream of records",
   "main": "update-stream.js",
   "scripts": {
