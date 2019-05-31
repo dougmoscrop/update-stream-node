@@ -22,7 +22,7 @@ test('passes through records with no change', async t => {
     const changes = new Map();
     const stream = update({ keyField: 'test', versionField: '_v', changes });
 
-    const start = intoStream.obj([existing]);
+    const start = intoStream.object([existing]);
 
     const expected = [existing];
     const actual = await getStream.array(start.pipe(stream));
@@ -39,7 +39,7 @@ test('appends new changes', async t => {
 
     const stream = update({ keyField: 'test', versionField: '_v', changes });
 
-    const start = intoStream.obj([existing]);
+    const start = intoStream.object([existing]);
 
     const actual = await getStream.array(start.pipe(stream));
     const expected = [existing, added];
@@ -56,7 +56,7 @@ test('appends new changes (batches)', async t => {
 
     const stream = update({ keyField: 'test', versionField: '_v', changes, batches: true });
 
-    const start = intoStream.obj([existing]);
+    const start = intoStream.object([existing]);
 
     const actual = await getStream.array(start.pipe(stream));
     const expected = [[existing], [added]];
@@ -73,7 +73,7 @@ test('replaces newer change', async t => {
 
     const stream = update({ keyField: 'test', versionField: '_v', changes });
 
-    const start = intoStream.obj([existing]);
+    const start = intoStream.object([existing]);
 
     const actual = await getStream.array(start.pipe(stream));
     const expected = [added];
@@ -90,7 +90,7 @@ test('skips newer change', async t => {
 
     const stream = update({ keyField: 'test', versionField: '_v', changes });
 
-    const start = intoStream.obj([existing]);
+    const start = intoStream.object([existing]);
 
     const actual = await getStream.array(start.pipe(stream));
     const expected = [existing];
@@ -107,7 +107,7 @@ test('processes batches but does not emit them when not configured', async t => 
 
     const stream = update({ keyField: 'test', versionField: '_v', changes });
 
-    const start = intoStream.obj([[existing]]);
+    const start = intoStream.object([[existing]]);
 
     const actual = await getStream.array(start.pipe(stream));
     const expected = [newer];
@@ -124,7 +124,7 @@ test('processes batches and emits them when configured', async t => {
 
     const stream = update({ keyField: 'test', versionField: '_v', changes, batches: true });
 
-    const start = intoStream.obj([[existing]]);
+    const start = intoStream.object([[existing]]);
 
     const actual = await getStream.array(start.pipe(stream));
     const expected = [[added]];
