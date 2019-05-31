@@ -1,3 +1,5 @@
+'use strict';
+
 const assert = require('assert');
 
 const { Transform } = require('stream');
@@ -5,37 +7,58 @@ const { Transform } = require('stream');
 module.exports = (options = {}) => {
     const {
         keyField,
-        versionField,
+        versionField = 'version',
         changes,
+        batches = false,
     } = options;
 
     assert(!!keyField, 'must provide keyField');
-    assert(!!versionField, 'must provide versionField');
     assert(changes instanceof Map, 'changes must be a Map');
 
     return new Transform({
             objectMode: true,
-            transform(row, enc, callback) {
-                const key = row[keyField];
-                const change = changes.get(key);
+            transform(chunk, enc, callback) {
+                const records = Array.isArray(chunk) ? chunk : [chunk];
 
-                if (change) {
-                    changes.delete(key);
+                for (let r = 0, length = records.length; r < length; r += 1) {
+                    const row = records[r];
+                    const key = row[keyField];
+                    const change = changes.get(key);
 
-                    if (change[versionField] > row[versionField]) {
-                        callback(null, change);
-                        return;
+                    if (change) {
+                        changes.delete(key);
+
+                        if (change[versionField] > row[versionField]) {
+                            records[r] = change;
+                        }
                     }
+
+                    if (batches) {
+                        continue;
+                    }
+
+                    this.push(records[r]);
                 }
 
-                callback(null, row);
+                if (batches) {
+                    callback(null, records);
+                } else {
+                    callback();
+                }
             },
             flush(callback) {
                 // any changes that were not removed during the transform
                 // are new, and need to be appended
-                Array.from(changes.values()).forEach(change => {
-                    this.push(change);
-                });
+                if (batches) {
+                    if (changes.size) {
+                        const values = Array.from(changes.values());
+                        this.push(values);
+                    }
+                } else {
+                    changes.forEach(change => {
+                        this.push(change);
+                    });
+                }
                 callback();
             },
         });

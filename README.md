@@ -6,9 +6,9 @@ Creates a transform stream that updates/appends records in a stream from a Map b
 const update = require('update-stream');
 
 myObjectStream.pipe(update({
-  keyField: 'id',
-  versionField: '_v',
-  changes: new Map()
+  keyField: 'id', // required
+  versionField: '_v', // defaults to 'version'
+  changes: new Map() // required, must be a Map
 }));
 ```
 
