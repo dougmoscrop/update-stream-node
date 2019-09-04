@@ -12,4 +12,4 @@ myObjectStream.pipe(update({
 }));
 ```
 
-Changes that have a newer version than an exisitng record will be kept; changes that have an older version than an exising record will be skipped, and changes that had no corresponding existing record will be appended to the stream.
+Changes that have a newer version than an existing record will be kept; changes that have an older version than an exising record will be skipped, and changes that had no corresponding existing record will be appended to the stream.
